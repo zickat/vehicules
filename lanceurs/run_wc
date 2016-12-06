@@ -1,0 +1,3 @@
+#!/bin/bash
+
+java -jar target/run_wc.jar $1 $2

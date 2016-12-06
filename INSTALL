@@ -1,0 +1,9 @@
+Dependances :
+
+Java 1.7
+Maven 3.3
+sh 3.2
+
+La duree d'execution est en secondes
+
+Probleme connu : probleme de droits pour run_nc et run_wc, droits a changer avec chmod

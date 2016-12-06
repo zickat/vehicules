@@ -1,0 +1,3 @@
+#!/bin/sh
+
+java -jar target/run_nc.jar $1 $2
