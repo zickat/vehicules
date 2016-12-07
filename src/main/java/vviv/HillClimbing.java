@@ -51,7 +51,7 @@ public class HillClimbing {
                 meilleur = gCourant;
             }
         }
-        System.out.println("cout : " + bestForAll);
+        //System.out.println("cout : " + bestForAll);
         try {
             assert meilleur != null;
             (new ExportDot(meilleur.getGestionnaireCamion())).export();
