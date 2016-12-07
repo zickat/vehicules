@@ -37,6 +37,7 @@ public class HillClimbing {
     public float findBestCout(){
         bestForAll = Float.MAX_VALUE;
         float courant;
+        int nbr = 0;
         GestionnaireClients meilleur = null;
         GestionnaireClients gCourant = null;
         while (duree() < dureeMax){
@@ -44,12 +45,13 @@ public class HillClimbing {
             g.genererSituationInitiale();
             gCourant = findBestCoutForInitial(g);
             courant = gCourant.cout();
+            nbr++;
             if(courant < bestForAll){
                 bestForAll = courant;
                 meilleur = gCourant;
-                //System.out.println("best : " + bestForAll);
             }
         }
+        System.out.println("cout : " + bestForAll);
         try {
             assert meilleur != null;
             (new ExportDot(meilleur.getGestionnaireCamion())).export();
@@ -75,8 +77,9 @@ public class HillClimbing {
                 meilleur = creerGestionnaire(gCourant);
                 best = meilleur.cout();
                 nbIter = 0;
+                listeTabou.add(courant);
             }else{
-                listeTabou.add(gCourant);
+                //listeTabou.add(courant);
                 nbIter++;
             }
         }

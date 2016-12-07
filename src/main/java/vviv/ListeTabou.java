@@ -9,7 +9,7 @@ import java.util.Queue;
  */
 public class ListeTabou {
 
-    private Queue<GestionnaireClients> queue = new ArrayDeque<>();
+    private Queue<Float> queue = new ArrayDeque<>();
 
     private int nbElementMax;
 
@@ -17,15 +17,15 @@ public class ListeTabou {
         this.nbElementMax = nbElementMax;
     }
 
-    public boolean contains(GestionnaireClients gestionnaireClients){
-        return queue.contains(gestionnaireClients);
+    public boolean contains(Float cout){
+        return queue.contains(cout);
     }
 
-    public boolean add(GestionnaireClients gestionnaireClients){
+    public boolean add(Float cout){
         if(queue.size() >= nbElementMax){
             queue.poll();
         }
-        return queue.offer(gestionnaireClients);
+        return queue.offer(cout);
     }
 
 }

@@ -46,7 +46,7 @@ public class GestionnaireCamion {
     }
 
     public void dispatchClients(List<Client> listeClient){
-        int nbCamions = listeCamion.size();
+        /*int nbCamions = listeCamion.size();
         int nbClients = listeClient.size();
         for (Camion camion : listeCamion){
             camion.setListeClients(new ArrayList<Client>());
@@ -55,11 +55,15 @@ public class GestionnaireCamion {
         for (Client client : listeClient){
             listeCamion.get(j).addClient(client);
             j = (j + 1)%nbCamions;
-        }
-        /*for (Camion camion : listeCamion){
+        }*/
+        int i = 0;
+        int nbCamions = listeCamion.size();
+        int nbClients = listeClient.size();
+        int nbByCamions = nbClients/nbCamions;
+        for (Camion camion : listeCamion){
             camion.setListeClients(listeClient.subList(i, Math.min(nbClients, i + nbByCamions)));
             i += nbByCamions;
-        }*/
+        }
     }
 
     public float cout(){

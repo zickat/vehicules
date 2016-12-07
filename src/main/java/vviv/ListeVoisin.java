@@ -1,6 +1,7 @@
 package vviv;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -8,15 +9,17 @@ import java.util.List;
  */
 public class ListeVoisin {
 
-    private GestionnaireClients gestionnaireClients;
+    protected GestionnaireClients gestionnaireClients;
 
-    private List<GestionnaireClients> listeVoisins = new ArrayList<>();
+    protected List<GestionnaireClients> listeVoisins = new ArrayList<>();
 
-    private GestionnaireClients lastForFusion = null;
+    protected GestionnaireClients lastForFusion = null;
 
-    protected int nbVoisins = 25;
+    private Permute permute;
 
-    private int nbTentativesMax = 1000;
+    protected int nbVoisins = 100;
+
+    protected int nbTentativesMax = 1000;
 
     public ListeVoisin(GestionnaireClients gestionnaireClients) {
         this.gestionnaireClients = gestionnaireClients;
@@ -25,40 +28,30 @@ public class ListeVoisin {
 
     public void genererVoisins(){
         int i = 0;
-        lastForFusion = null;
-        int nbTentatives = 0;
-        while(i < nbVoisins){
-            if(genererPermutation()){
+        permute = new Permute(gestionnaireClients.getListeClients().toArray());
+        while(i < nbVoisins) {
+            if (genererPermutation()) {
                 i++;
             }
-        }
-        i = 0;
-        nbTentatives = 0;
-        while(i < nbVoisins && nbTentatives < nbTentativesMax){
-            if(genererDivision()){
-                i++;
-            }
-            nbTentatives++;
-        }
-        int nbCamions = gestionnaireClients.getGestionnaireCamion().getListeCamion().size();
-        i = 1;
-        nbTentatives = 0;
-        while(i < nbVoisins && nbCamions - i > 0 && nbTentatives < nbTentativesMax){
-            if(genererFusion()){
-                i++;
-            }
-            nbTentatives++;
         }
     }
 
-    private boolean genererPermutation(){
-        GestionnaireClients temp = creerGestionnaire(gestionnaireClients);
-        temp.shuffle();
-        temp.dispatchClients();
-        return ajouterALaListe(temp);
+    protected boolean genererPermutation(){
+        if(permute.hasNext()){
+            GestionnaireClients temp = creerGestionnaire(gestionnaireClients);
+            List<Client> listeTemp = new ArrayList<>();
+            Object[] p = (Object[]) permute.next();
+            for(Object o : p){
+                listeTemp.add((Client) o);
+            }
+            temp.setListeClients(listeTemp);
+            temp.dispatchClients();
+            return ajouterALaListe(temp);
+        }
+        return false;
     }
 
-    private boolean genererDivision() {
+    protected boolean genererDivision() {
         GestionnaireClients temp = creerGestionnaire(gestionnaireClients);
         Camion nouveau = new Camion(temp.getDepot());
         temp.getGestionnaireCamion().addCamion(nouveau);
@@ -66,7 +59,7 @@ public class ListeVoisin {
         return ajouterALaListe(temp);
     }
 
-    private boolean genererFusion() {
+    protected boolean genererFusion() {
         GestionnaireClients temp;
         if(lastForFusion != null){
             temp = creerGestionnaire(lastForFusion);
@@ -78,12 +71,12 @@ public class ListeVoisin {
         return ajouterALaListe(temp);
     }
 
-    GestionnaireClients meilleurVoisin(ListeTabou listeTabou){
+    public GestionnaireClients meilleurVoisin(ListeTabou listeTabou){
         float cout = Float.MAX_VALUE;
         GestionnaireClients best = null;
         for(GestionnaireClients g : listeVoisins){
             float c = g.cout();
-            if(c < cout && !listeTabou.contains(g)){
+            if(c < cout && !listeTabou.contains(cout)){
                 cout = c;
                 best = g;
             }
