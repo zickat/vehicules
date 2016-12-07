@@ -2,6 +2,7 @@ package vviv;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,11 +16,13 @@ public class ListeVoisin {
 
     protected GestionnaireClients lastForFusion = null;
 
-    private Permute permute;
+    protected GestionnaireClients temp;
 
-    protected int nbVoisins = 100;
+    //private Permute permute;
 
-    protected int nbTentativesMax = 1000;
+    protected int nbVoisins = 1000;
+
+    protected int nbTentativesMax = 10;
 
     public ListeVoisin(GestionnaireClients gestionnaireClients) {
         this.gestionnaireClients = gestionnaireClients;
@@ -28,7 +31,7 @@ public class ListeVoisin {
 
     public void genererVoisins(){
         int i = 0;
-        permute = new Permute(gestionnaireClients.getListeClients().toArray());
+        //permute = new Permute(gestionnaireClients.getListeClients().toArray());
         while(i < nbVoisins) {
             if (genererPermutation()) {
                 i++;
@@ -37,7 +40,7 @@ public class ListeVoisin {
     }
 
     protected boolean genererPermutation(){
-        if(permute.hasNext()){
+        /*if(permute.hasNext()){
             GestionnaireClients temp = creerGestionnaire(gestionnaireClients);
             List<Client> listeTemp = new ArrayList<>();
             Object[] p = (Object[]) permute.next();
@@ -48,7 +51,11 @@ public class ListeVoisin {
             temp.dispatchClients();
             return ajouterALaListe(temp);
         }
-        return false;
+        return false;*/
+        GestionnaireClients temp = creerGestionnaire(gestionnaireClients);
+        temp.shuffle();
+        temp.dispatchClients();
+        return ajouterALaListe(temp);
     }
 
     protected boolean genererDivision() {
@@ -60,7 +67,6 @@ public class ListeVoisin {
     }
 
     protected boolean genererFusion() {
-        GestionnaireClients temp;
         if(lastForFusion != null){
             temp = creerGestionnaire(lastForFusion);
         }else {
@@ -68,17 +74,19 @@ public class ListeVoisin {
         }
         temp.getGestionnaireCamion().removeCamion();
         temp.dispatchClients();
+        lastForFusion = temp;
         return ajouterALaListe(temp);
     }
 
     public GestionnaireClients meilleurVoisin(ListeTabou listeTabou){
         float cout = Float.MAX_VALUE;
-        GestionnaireClients best = null;
+        GestionnaireClients best = gestionnaireClients;
         for(GestionnaireClients g : listeVoisins){
             float c = g.cout();
             if(c < cout && !listeTabou.contains(cout)){
                 cout = c;
                 best = g;
+                //System.out.println(c + "  " + cout);
             }
         }
         return best;

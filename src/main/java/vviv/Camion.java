@@ -41,7 +41,7 @@ public class Camion {
         float c = 0;
         Client precedant = depot;
         for(Client client : listeClients){
-            c += client.getDuree() + client.getCoordonnees().distance(precedant.getCoordonnees());
+            c += client.getCoordonnees().distance(precedant.getCoordonnees());
             precedant = client;
         }
         c += precedant.getCoordonnees().distance(depot.getCoordonnees());

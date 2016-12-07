@@ -23,14 +23,20 @@ public class ListeVoisinWithContraintes extends ListeVoisin {
             }
             nbTentatives++;
         }
+        //System.out.println(listeVoisins.size());
         int nbCamions = gestionnaireClients.getGestionnaireCamion().getListeCamion().size();
-        i = 1;
-        nbTentatives = 0;
-        while(i < nbVoisins && nbCamions - i > 0 && nbTentatives < nbTentativesMax){
+        nbTentatives = 1;
+        while(nbCamions - nbTentatives > 1){
             if(genererFusion()){
                 i++;
+                //System.out.println("Camions : " + (nbCamions - nbTentatives));
             }
             nbTentatives++;
+        }
+        while(i < 2 * nbVoisins) {
+            if (genererPermutation()) {
+                i++;
+            }
         }
     }
 

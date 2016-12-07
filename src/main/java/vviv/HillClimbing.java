@@ -51,7 +51,7 @@ public class HillClimbing {
                 meilleur = gCourant;
             }
         }
-        //System.out.println("cout : " + bestForAll);
+        System.out.println("cout : " + bestForAll);
         try {
             assert meilleur != null;
             (new ExportDot(meilleur.getGestionnaireCamion())).export();
@@ -72,7 +72,6 @@ public class HillClimbing {
             courant = gCourant.cout();
             //System.out.println("test : "+meilleur.cout() + "   " + best + "   " +gCourant.cout());
             //System.out.println(temp);
-            //System.out.println("Cout de base : "+ best);
             if (courant < best){
                 meilleur = creerGestionnaire(gCourant);
                 best = meilleur.cout();
